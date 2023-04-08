@@ -1,0 +1,11 @@
+{
+  "name": "aframe.lunar",
+  "version": "1.0.0",
+  "description": "demo aframe project",
+  "main": "index.js",
+  "scripts": {
+    "start": "live-server web"
+  },
+  "author": "alejandro jimenez",
+  "license": "ISC"
+}
