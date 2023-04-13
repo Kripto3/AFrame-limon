@@ -6,7 +6,7 @@
     <title>Mi primer Aframe</title>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-environment-component@1.3.2/dist/aframe-environment-component.min.js"></script>
-    <script src="game.js"></script>
+    <!-- <script src="game.js"></script> -->
   </head>
   <body>
     <a-scene>
@@ -21,23 +21,23 @@
         <a-cursor></a-cursor>
       </a-camera>
     </a-scene>
-    <a-gltf-model
-      id="heart-model"
-      src="scene.gltf"
+    <a-sphere
+      id="limon-model"
+      radius="1.25"
+      color="#EF2D5E"
       position="0 1.5 -5"
-      scale="0.01 0.01 0.01"
+      scale="0.75 0.75 0.75"
       animation="property: rotation; to: 0 360 0; loop: true; easing: linear; dur: 2000"
       animation__collect="property: position; to: 0 0 0; dur: 300; startEvents: collected"
       animation__minimize="property: scale; to: 0 0 0; dur: 300; startEvents: collected"
-    >
-    </a-gltf-model>
+    ></a-sphere>
   </body>
   <script>
     const sceneEl = document.querySelector("a-scene");
-    const heartEl = document.querySelector("#heart-model");
+    const limonEL = document.querySelector("#limon-model");
     const scoreEl = document.querySelector("#score-element");
 
-    let score = 1;
+    let score = 0;
 
     //set and show new score
     function displayScore() {
@@ -54,7 +54,7 @@
     }
 
     function createHeart() {
-      const clone = heartEl.cloneNode();
+      const clone = limonEL.cloneNode();
       clone.setAttribute("position", randomPosition());
       clone.addEventListener("mousedown", () => {
         score++;
@@ -63,7 +63,7 @@
       });
       clone.addEventListener("animationcomplete", () => {
         clone.setAttribute("position", randomPosition());
-        clone.setAttribute("scale", "0.01 0.01 0.01");
+        clone.setAttribute("scale", "0.75 0.75 0.75");
       });
       sceneEl.appendChild(clone);
     }
