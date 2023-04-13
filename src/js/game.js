@@ -1,8 +1,8 @@
 const sceneEl = document.querySelector("a-scene");
-const heartEl = document.querySelector("#heart-model");
+const limonEL = document.querySelector("#limon-model");
 const scoreEl = document.querySelector("#score-element");
 
-let score = 1;
+let score = 0;
 
 //set and show new score
 function displayScore() {
@@ -19,7 +19,7 @@ function randomPosition() {
 }
 
 function createHeart() {
-  const clone = heartEl.cloneNode();
+  const clone = limonEL.cloneNode();
   clone.setAttribute("position", randomPosition());
   clone.addEventListener("mousedown", () => {
     score++;
@@ -28,7 +28,7 @@ function createHeart() {
   });
   clone.addEventListener("animationcomplete", () => {
     clone.setAttribute("position", randomPosition());
-    clone.setAttribute("scale", "0.01 0.01 0.01");
+    clone.setAttribute("scale", "0.75 0.75 0.75");
   });
   sceneEl.appendChild(clone);
 }
