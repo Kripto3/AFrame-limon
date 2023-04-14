@@ -12,13 +12,14 @@ function displayScore() {
 //random position of lemon
 function randomPosition() {
   return {
-    x: (Math.random() - 0.5) * 20,
+    x: (Math.random() - 0.5) * 200,
     y: 1.5,
-    z: (Math.random() - 0.5) * 20,
+    z: (Math.random() - 0.5) * 200,
   };
 }
 
-function createHeart() {
+function createLemon() {
+  debugger;
   const clone = limonEL.cloneNode();
   clone.setAttribute("position", randomPosition());
   clone.addEventListener("mousedown", () => {
@@ -28,13 +29,17 @@ function createHeart() {
   });
   clone.addEventListener("animationcomplete", () => {
     clone.setAttribute("position", randomPosition());
-    clone.setAttribute("scale", "0.75 0.75 0.75");
+    clone.setAttribute("scale", "0.05 0.05 0.05");
   });
+
   sceneEl.appendChild(clone);
+  if (score == 10) {
+    sceneEl.setAttribute("enviroment", "preset:egypt");
+  }
 }
 
 for (let i = 0; i < 15; i++) {
-  createHeart();
+  createLemon();
 }
 
 displayScore();
