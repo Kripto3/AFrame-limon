@@ -4,6 +4,9 @@ const scoreEl = document.querySelector("#score-element");
 const cameraEl = document.querySelector("#camera-element");
 const posicionesRandomEl = document.querySelector("#posicionesRandom");
 const cambiandoNivelComponent = document.querySelector("#cambiandoNivel");
+const cambianUniversoBtn = document.querySelector("#botonSaltarUniverso");
+
+let score = 0;
 
 AFRAME.registerComponent("posiciones-random", {
   init: function () {
@@ -20,14 +23,8 @@ AFRAME.registerComponent("posiciones-random", {
 
 AFRAME.registerComponent("cambiar-entorno", {
   init: function () {
-    let score = 0;
-
     //obtenemos el componente de posiciones
     const componentePR = posicionesRandomEl.components["posiciones-random"];
-
-    //obtenemos el componente de mensaje cambiando nivel
-    const componenteCambiandoNivel =
-      cambiandoNivelComponent.components["nivel-cambiado"];
 
     //cambia el score
     function displayScore() {
@@ -42,7 +39,6 @@ AFRAME.registerComponent("cambiar-entorno", {
         score++;
         clone.dispatchEvent(new Event("collected"));
         displayScore();
-        cambiarEntorno();
       });
       clone.addEventListener("animationcomplete", () => {
         clone.setAttribute("position", componentePR.randomPosition());
@@ -56,25 +52,33 @@ AFRAME.registerComponent("cambiar-entorno", {
       createLemon();
     }
 
-    // Al encontrar n limones, se cambiara a un siguiente ambiente (Nivel)
-    function cambiarEntorno() {
-      if (score === 4) {
-        componenteCambiandoNivel.enviarMensajeCreandoNivel();
-      }
-    }
     displayScore();
   },
 });
 
 AFRAME.registerComponent("nivel-cambiado", {
   init: function () {
-    this.enviarMensajeCreandoNivel = function () {
+    cambianUniversoBtn.addEventListener("click", function () {
+      // Al encontrar 5 limones, se cambiara a un siguiente ambiente (Nivel)
+      if (score > 4) {
+        // Cambiar a un nuevo environment al hacer clic
+        enviarMensajeCreandoNivel("Cambiando nivel...", true);
+      } else {
+        enviarMensajeCreandoNivel("Te faltan mas limones.", false);
+      }
+    });
+
+    function enviarMensajeCreandoNivel(mostrarTexto, cambiar) {
       // Mostrar el mensaje "Cambiando nivel"
-      debugger;
       const mensaje = document.createElement("a-text");
-      mensaje.setAttribute("value", "Cambiando nivel...");
+      mensaje.setAttribute("value", mostrarTexto);
       mensaje.setAttribute("position", posicionMsnCambiandoNivel());
-      mensaje.setAttribute("color", "#FFF");
+      if (cambiar == true) {
+        mensaje.setAttribute("color", "#FFF");
+      } else {
+        mensaje.setAttribute("color", "#FF0000");
+      }
+
       mensaje.setAttribute("width", "3");
       cameraEl.appendChild(mensaje);
 
@@ -86,7 +90,9 @@ AFRAME.registerComponent("nivel-cambiado", {
       // Esperar dos segundos antes de cambiar el entorno
       setTimeout(() => {
         // Cambiar el entorno
-        sceneEl.setAttribute("environment", "preset", "moon");
+        if (cambiar === true) {
+          sceneEl.setAttribute("environment", "preset", "moon");
+        }
 
         // Ocultar el mensaje
         mensaje.setAttribute("visible", "false");
@@ -104,6 +110,6 @@ AFRAME.registerComponent("nivel-cambiado", {
           z: -0.8,
         };
       }
-    };
+    }
   },
 });
